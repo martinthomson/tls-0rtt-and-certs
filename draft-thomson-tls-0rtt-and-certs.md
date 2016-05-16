@@ -112,7 +112,12 @@ TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
 ```
 
 All these cipher suites include the use of pre-shared keys and therefore permit
-the use of 0-RTT.  These cipher suites can only be used with TLS 1.3.
+the use of 0-RTT.  These cipher suites can only be used with TLS 1.3.  All
+include server authentication.  A server MAY request client authentication by
+sending a CertificateRequest if it negotiates one of these cipher suites.
+
+All the necessary cryptographic operations and the key schedule are as described
+in [I-D.ietf-tls-tls13].
 
 These cipher suites use a pre-shared key for 0-RTT data, with subsequent data
 protected by both the PSK and an ephemeral key exchange using finite field or
@@ -125,21 +130,16 @@ These cipher suites are all authenticated using both the pre-shared key and a
 signature, either from an RSA certificate [RFC3447] (for DHE_PSK_RSA and
 ECDHE_PSK_RSA), or an ECDSA certificate (for ECDHE_PSK_ECDSA) [X962].
 
-All the necessary cryptographic operations and the key schedule are as described
-in [I-D.ietf-tls-tls13].
-
-A server MAY request client authentication by sending a CertificateRequest if it
-negotiates one of these cipher suites.
-
 AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and AEAD_AES_256_GCM
 authenticated encryption defined in [RFC5116].  These are similar to the other
 AES-GCM modes that are described in [RFC5288].  CHACHA20_POLY1305 cipher suites
 use the authenticated encryption defined in [RFC7539].  Other ChaCha20-Poly1305
-modes are described in [I-D.ietf-tls-chacha20-poly1305]).  All authenticated
+modes are described in [I-D.ietf-tls-chacha20-poly1305].  All authenticated
 encryption modes use the nonce formulation from [I-D.ietf-tls-tls13].
 
 Suites ending with SHA256 use SHA-256 for the pseudorandom function; suites
 ending with SHA384 use SHA-384 [FIPS180-4].
+
 
 # Combining Certificate and PSK Authentication
 
@@ -147,9 +147,9 @@ TLS 1.3 forbids a server from selecting different values for many of the
 connection parameters when resuming a connection.  Though a client might need to
 offer a choice in order to support a fallback to a 1-RTT handshake, a server
 cannot change parameters such as the selected application layer protocol
-[RFC7301] or choose a cipher suite.  Though it is theoretically possible with
-these cipher suites, servers MUST NOT change certificates when resuming.  When
-resuming, clients MUST treat a change in certificate as a fatal error.
+[RFC7301].  Though it is theoretically possible to offer a different certificate
+with these cipher suites, servers MUST NOT change certificates when resuming.
+When resuming, clients MUST treat a change in certificate as a fatal error.
 
 Outside of their use with 0-RTT, these cipher suites also permit the use of a
 combination of pre-shared key and certificate authentication.  No real use case
