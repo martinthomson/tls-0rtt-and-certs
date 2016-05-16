@@ -4,8 +4,8 @@
 
 Network Working Group                                         M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                            May 15, 2016
-Expires: November 16, 2016
+Intended status: Standards Track                            May 16, 2016
+Expires: November 17, 2016
 
 
  Cipher Suites for Negotiating Zero Round Trip (0-RTT) Transport Layer
@@ -33,7 +33,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 16, 2016.
+   This Internet-Draft will expire on November 17, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson                 Expires November 16, 2016               [Page 1]
+Thomson                 Expires November 17, 2016               [Page 1]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson                 Expires November 16, 2016               [Page 2]
+Thomson                 Expires November 17, 2016               [Page 2]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
@@ -136,7 +136,12 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
    All these cipher suites include the use of pre-shared keys and
    therefore permit the use of 0-RTT.  These cipher suites can only be
-   used with TLS 1.3.
+   used with TLS 1.3.  All include server authentication.  A server MAY
+   request client authentication by sending a CertificateRequest if it
+   negotiates one of these cipher suites.
+
+   All the necessary cryptographic operations and the key schedule are
+   as described in [I-D.ietf-tls-tls13].
 
    These cipher suites use a pre-shared key for 0-RTT data, with
    subsequent data protected by both the PSK and an ephemeral key
@@ -152,26 +157,20 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    DHE_PSK_RSA and ECDHE_PSK_RSA), or an ECDSA certificate (for
    ECDHE_PSK_ECDSA) [X962].
 
-   All the necessary cryptographic operations and the key schedule are
-   as described in [I-D.ietf-tls-tls13].
-
-   A server MAY request client authentication by sending a
-   CertificateRequest if it negotiates one of these cipher suites.
-
    AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and
    AEAD_AES_256_GCM authenticated encryption defined in [RFC5116].
    These are similar to the other AES-GCM modes that are described in
    [RFC5288].  CHACHA20_POLY1305 cipher suites use the authenticated
+   encryption defined in [RFC7539].  Other ChaCha20-Poly1305 modes are
 
 
 
-Thomson                 Expires November 16, 2016               [Page 3]
+Thomson                 Expires November 17, 2016               [Page 3]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
 
-   encryption defined in [RFC7539].  Other ChaCha20-Poly1305 modes are
-   described in [I-D.ietf-tls-chacha20-poly1305]).  All authenticated
+   described in [I-D.ietf-tls-chacha20-poly1305].  All authenticated
    encryption modes use the nonce formulation from [I-D.ietf-tls-tls13].
 
    Suites ending with SHA256 use SHA-256 for the pseudorandom function;
@@ -183,10 +182,11 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    the connection parameters when resuming a connection.  Though a
    client might need to offer a choice in order to support a fallback to
    a 1-RTT handshake, a server cannot change parameters such as the
-   selected application layer protocol [RFC7301] or choose a cipher
-   suite.  Though it is theoretically possible with these cipher suites,
-   servers MUST NOT change certificates when resuming.  When resuming,
-   clients MUST treat a change in certificate as a fatal error.
+   selected application layer protocol [RFC7301].  Though it is
+   theoretically possible to offer a different certificate with these
+   cipher suites, servers MUST NOT change certificates when resuming.
+   When resuming, clients MUST treat a change in certificate as a fatal
+   error.
 
    Outside of their use with 0-RTT, these cipher suites also permit the
    use of a combination of pre-shared key and certificate
@@ -221,7 +221,7 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
 
 
-Thomson                 Expires November 16, 2016               [Page 4]
+Thomson                 Expires November 17, 2016               [Page 4]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
@@ -277,7 +277,7 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
 
 
-Thomson                 Expires November 16, 2016               [Page 5]
+Thomson                 Expires November 17, 2016               [Page 5]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
@@ -333,4 +333,4 @@ Author's Address
 
 
 
-Thomson                 Expires November 16, 2016               [Page 6]
+Thomson                 Expires November 17, 2016               [Page 6]
