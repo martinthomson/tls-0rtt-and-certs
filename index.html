@@ -377,15 +377,23 @@ li, p {
 <p id="rfc.section.1.1.p.1">The words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;SHOULD&#8221;, and &#8220;MAY&#8221; are used in this document.  It&#8217;s not shouting; when they are capitalized, they have the special meaning defined in <a href="#RFC2119">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#new-cipher-suites" id="new-cipher-suites">New Cipher Suites</a></h1>
 <p id="rfc.section.2.p.1">The following cipher suites are defined:</p>
-<p>
-  <samp>TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX </samp>
-</p>
-<p id="rfc.section.2.p.3">All these cipher suites include the use of pre-shared keys and therefore permit the use of 0-RTT.  These cipher suites can only be used with TLS 1.3.  All include server authentication.  A server MAY request client authentication by sending a CertificateRequest if it negotiates one of these cipher suites.</p>
-<p id="rfc.section.2.p.4">All the necessary cryptographic operations and the key schedule are as described in <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
-<p id="rfc.section.2.p.5">These cipher suites use a pre-shared key for 0-RTT data, with subsequent data protected by both the PSK and an ephemeral key exchange using finite field or elliptic curve Diffie-Hellman.  The pre-shared key forms the static secret (SS) and the ephemeral key exchange produces the ephemeral secret (ES).  DHE_PSK_RSA suites use finite field Diffie-Hellman key exchange <a href="#DH">[DH]</a>; ECDHE_PSK_ECDSA and ECDHE_PSK_RSA suites use elliptic curve Diffie-Hellman key exchange <a href="#X962">[X962]</a>.</p>
-<p id="rfc.section.2.p.6">These cipher suites are all authenticated using both the pre-shared key and a signature, either from an RSA certificate <a href="#RFC3447">[RFC3447]</a> (for DHE_PSK_RSA and ECDHE_PSK_RSA), or an ECDSA certificate (for ECDHE_PSK_ECDSA) <a href="#X962">[X962]</a>.</p>
-<p id="rfc.section.2.p.7">AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and AEAD_AES_256_GCM authenticated encryption defined in <a href="#RFC5116">[RFC5116]</a>.  These are similar to the other AES-GCM modes that are described in <a href="#RFC5288">[RFC5288]</a>.  CHACHA20_POLY1305 cipher suites use the authenticated encryption defined in <a href="#RFC7539">[RFC7539]</a>.  Other ChaCha20-Poly1305 modes are described in <a href="#I-D.ietf-tls-chacha20-poly1305">[I-D.ietf-tls-chacha20-poly1305]</a>.  All authenticated encryption modes use the nonce formulation from <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
-<p id="rfc.section.2.p.8">Suites ending with SHA256 use SHA-256 for the pseudorandom function; suites ending with SHA384 use SHA-384 <a href="#FIPS180-4">[FIPS180-4]</a>.</p>
+<pre>
+TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_ECDHE_PSK_ECDSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+</pre>
+<p id="rfc.section.2.p.2">All these cipher suites include the use of pre-shared keys and therefore permit the use of 0-RTT.  These cipher suites can only be used with TLS 1.3.  All include server authentication.  A server MAY request client authentication by sending a CertificateRequest if it negotiates one of these cipher suites.</p>
+<p id="rfc.section.2.p.3">All the necessary cryptographic operations and the key schedule are as described in <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
+<p id="rfc.section.2.p.4">These cipher suites use a pre-shared key for 0-RTT data, with subsequent data protected by both the PSK and an ephemeral key exchange using finite field or elliptic curve Diffie-Hellman.  The pre-shared key forms the static secret (SS) and the ephemeral key exchange produces the ephemeral secret (ES).  DHE_PSK_RSA suites use finite field Diffie-Hellman key exchange <a href="#DH">[DH]</a>; ECDHE_PSK_ECDSA and ECDHE_PSK_RSA suites use elliptic curve Diffie-Hellman key exchange <a href="#X962">[X962]</a>.</p>
+<p id="rfc.section.2.p.5">These cipher suites are all authenticated using both the pre-shared key and a signature, either from an RSA certificate <a href="#RFC3447">[RFC3447]</a> (for DHE_PSK_RSA and ECDHE_PSK_RSA), or an ECDSA certificate (for ECDHE_PSK_ECDSA) <a href="#X962">[X962]</a>.</p>
+<p id="rfc.section.2.p.6">AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and AEAD_AES_256_GCM authenticated encryption defined in <a href="#RFC5116">[RFC5116]</a>.  These are similar to the other AES-GCM modes that are described in <a href="#RFC5288">[RFC5288]</a>.  CHACHA20_POLY1305 cipher suites use the authenticated encryption defined in <a href="#RFC7539">[RFC7539]</a>.  Other ChaCha20-Poly1305 modes are described in <a href="#I-D.ietf-tls-chacha20-poly1305">[I-D.ietf-tls-chacha20-poly1305]</a>.  All authenticated encryption modes use the nonce formulation from <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
+<p id="rfc.section.2.p.7">Suites ending with SHA256 use SHA-256 for the pseudorandom function; suites ending with SHA384 use SHA-384 <a href="#FIPS180-4">[FIPS180-4]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#combining-certificate-and-psk-authentication" id="combining-certificate-and-psk-authentication">Combining Certificate and PSK Authentication</a></h1>
 <p id="rfc.section.3.p.1">TLS 1.3 forbids a server from selecting different values for many of the connection parameters when resuming a connection.  Though a client might need to offer a choice in order to support a fallback to a 1-RTT handshake, a server cannot change parameters such as the selected application layer protocol <a href="#RFC7301">[RFC7301]</a>.  Though it is theoretically possible to offer a different certificate with these cipher suites, servers MUST NOT change certificates when resuming.  When resuming, clients MUST treat a change in certificate as a fatal error.</p>
 <p id="rfc.section.3.p.2">Outside of their use with 0-RTT, these cipher suites also permit the use of a combination of pre-shared key and certificate authentication.  No real use case for this has been unearthed other than with the use of resumption.</p>
@@ -406,9 +414,17 @@ li, p {
 <p id="rfc.section.5.p.2">The combination of pre-shared key and certificate authentication relies on peers maintaining the confidentiality of the pre-shared key for the confidentiality and integrity of 0-RTT data.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <p id="rfc.section.6.p.1">IANA is requested to add the following entries in the TLS Cipher Suite Registry:</p>
-<p>
-  <samp>TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX </samp>
-</p>
+<pre>
+TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
+TLS_ECDHE_PSK_ECDSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
+</pre>
 <h1 id="rfc.references"><a href="#rfc.references">7.</a> References</h1>
 <h2 id="rfc.references.1"><a href="#rfc.references.1">7.1.</a> Normative References</h2>
 <table>
