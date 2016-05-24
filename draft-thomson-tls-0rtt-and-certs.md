@@ -49,6 +49,9 @@ normative:
 
 informative:
   RFC0793:
+  RFC5288:
+  RFC7301:
+  I-D.ietf-tls-chacha20-poly1305:
 
 
 --- abstract
