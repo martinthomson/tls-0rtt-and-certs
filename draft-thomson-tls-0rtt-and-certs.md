@@ -5,6 +5,7 @@ docname: draft-thomson-tls-0rtt-and-certs-latest
 date: 2016
 category: std
 ipr: trust200902
+updates: I-D.ietf-tls-tls13
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs, docmapping]
@@ -159,6 +160,27 @@ The cached-info extension [I-D.ietf-tls-cached-info] can be used to reduce the
 size of a handshake, allowing more space for application data.  Since the server
 certificate is not permitted to change when using 0-RTT with one of these cipher
 suites, this extension trivially saves a considerable amount of space.
+
+
+# Signaling Support
+
+A TLS server that supports these cipher suites needs to indicate that it does so
+in the NewSessionTicket message.  A new `allow_dhe_cert_resumption` value is
+added to TicketFlags that, when set, indicates that the server will accept
+resumption with cipher suites that do both (EC)DHE and certificate
+authentication.
+
+~~~
+   enum {
+     allow_early_data(1),
+     allow_dhe_resumption(2),
+     allow_psk_resumption(4),
+     allow_dhe_cert_resumption(8) // new
+   } TicketFlags;
+~~~
+
+There is no IANA registry for these values, so [I-D.ietf-tls-tls13] is updated
+to include this value.
 
 
 # Security Considerations

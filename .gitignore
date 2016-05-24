@@ -1,5 +1,12 @@
+*.redxml
+*.txt
+*.html
+*.pdf
 *~
+*.swp
+/*-[0-9][0-9].xml
 .refcache
+venv/
+issues.json
 lib
-lib
-draft-thomson-tls-0rtt-and-certs.md
+draft-thomson-tls-0rtt-and-certs.xml
