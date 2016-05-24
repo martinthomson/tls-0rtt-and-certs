@@ -272,11 +272,12 @@ li, p {
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 New Cipher Suites"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Combining Certificate and PSK Authentication"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="6 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="6.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="6.2 Informative References"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Signaling Support"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="7 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgments"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
@@ -286,7 +287,7 @@ li, p {
 
   <meta name="dct.creator" content="Thomson, M." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-thomson-tls-0rtt-and-certs-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-5-16" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-5-24" />
   <meta name="dct.abstract" content="New cipher suites are defined that allow a client to use zero round trip (0-RTT) with Transport Layer Security (TLS), while also enabling the peers to renewed certificate-based authentication." />
   <meta name="description" content="New cipher suites are defined that allow a client to use zero round trip (0-RTT) with Transport Layer Security (TLS), while also enabling the peers to renewed certificate-based authentication." />
 
@@ -306,11 +307,19 @@ li, p {
   <td class="right">Mozilla</td>
 </tr>
 <tr>
-  <td class="left">Intended status: Standards Track</td>
-  <td class="right">May 16, 2016</td>
+  <td class="left">Updates: I-D.ietf-tls-tls13 (if</td>
+  <td class="right">May 24, 2016</td>
 </tr>
 <tr>
-  <td class="left">Expires: November 17, 2016</td>
+  <td class="left">         approved)</td>
+  <td class="right"></td>
+</tr>
+<tr>
+  <td class="left">Intended status: Standards Track</td>
+  <td class="right"></td>
+</tr>
+<tr>
+  <td class="left">Expires: November 25, 2016</td>
   <td class="right"></td>
 </tr>
 
@@ -331,7 +340,7 @@ li, p {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 17, 2016.</p>
+<p>This Internet-Draft will expire on November 25, 2016.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -347,11 +356,12 @@ li, p {
 <ul><li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a></li>
 </ul><li>2.   <a href="#rfc.section.2">New Cipher Suites</a></li>
 <li>3.   <a href="#rfc.section.3">Combining Certificate and PSK Authentication</a></li>
-<li>4.   <a href="#rfc.section.4">Security Considerations</a></li>
-<li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
-<li>6.   <a href="#rfc.references">References</a></li>
-<ul><li>6.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>6.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>4.   <a href="#rfc.section.4">Signaling Support</a></li>
+<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
+<li>7.   <a href="#rfc.references">References</a></li>
+<ul><li>7.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>7.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgments</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
 
@@ -374,22 +384,33 @@ li, p {
 <p id="rfc.section.2.p.4">All the necessary cryptographic operations and the key schedule are as described in <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
 <p id="rfc.section.2.p.5">These cipher suites use a pre-shared key for 0-RTT data, with subsequent data protected by both the PSK and an ephemeral key exchange using finite field or elliptic curve Diffie-Hellman.  The pre-shared key forms the static secret (SS) and the ephemeral key exchange produces the ephemeral secret (ES).  DHE_PSK_RSA suites use finite field Diffie-Hellman key exchange <a href="#DH">[DH]</a>; ECDHE_PSK_ECDSA and ECDHE_PSK_RSA suites use elliptic curve Diffie-Hellman key exchange <a href="#X962">[X962]</a>.</p>
 <p id="rfc.section.2.p.6">These cipher suites are all authenticated using both the pre-shared key and a signature, either from an RSA certificate <a href="#RFC3447">[RFC3447]</a> (for DHE_PSK_RSA and ECDHE_PSK_RSA), or an ECDSA certificate (for ECDHE_PSK_ECDSA) <a href="#X962">[X962]</a>.</p>
-<p id="rfc.section.2.p.7">AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and AEAD_AES_256_GCM authenticated encryption defined in <a href="#RFC5116">[RFC5116]</a>.  These are similar to the other AES-GCM modes that are described in [RFC5288].  CHACHA20_POLY1305 cipher suites use the authenticated encryption defined in <a href="#RFC7539">[RFC7539]</a>.  Other ChaCha20-Poly1305 modes are described in [I-D.ietf-tls-chacha20-poly1305].  All authenticated encryption modes use the nonce formulation from <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
+<p id="rfc.section.2.p.7">AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and AEAD_AES_256_GCM authenticated encryption defined in <a href="#RFC5116">[RFC5116]</a>.  These are similar to the other AES-GCM modes that are described in <a href="#RFC5288">[RFC5288]</a>.  CHACHA20_POLY1305 cipher suites use the authenticated encryption defined in <a href="#RFC7539">[RFC7539]</a>.  Other ChaCha20-Poly1305 modes are described in <a href="#I-D.ietf-tls-chacha20-poly1305">[I-D.ietf-tls-chacha20-poly1305]</a>.  All authenticated encryption modes use the nonce formulation from <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a>.</p>
 <p id="rfc.section.2.p.8">Suites ending with SHA256 use SHA-256 for the pseudorandom function; suites ending with SHA384 use SHA-384 <a href="#FIPS180-4">[FIPS180-4]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#combining-certificate-and-psk-authentication" id="combining-certificate-and-psk-authentication">Combining Certificate and PSK Authentication</a></h1>
-<p id="rfc.section.3.p.1">TLS 1.3 forbids a server from selecting different values for many of the connection parameters when resuming a connection.  Though a client might need to offer a choice in order to support a fallback to a 1-RTT handshake, a server cannot change parameters such as the selected application layer protocol [RFC7301].  Though it is theoretically possible to offer a different certificate with these cipher suites, servers MUST NOT change certificates when resuming.  When resuming, clients MUST treat a change in certificate as a fatal error.</p>
+<p id="rfc.section.3.p.1">TLS 1.3 forbids a server from selecting different values for many of the connection parameters when resuming a connection.  Though a client might need to offer a choice in order to support a fallback to a 1-RTT handshake, a server cannot change parameters such as the selected application layer protocol <a href="#RFC7301">[RFC7301]</a>.  Though it is theoretically possible to offer a different certificate with these cipher suites, servers MUST NOT change certificates when resuming.  When resuming, clients MUST treat a change in certificate as a fatal error.</p>
 <p id="rfc.section.3.p.2">Outside of their use with 0-RTT, these cipher suites also permit the use of a combination of pre-shared key and certificate authentication.  No real use case for this has been unearthed other than with the use of resumption.</p>
 <p id="rfc.section.3.p.3">The cached-info extension <a href="#I-D.ietf-tls-cached-info">[I-D.ietf-tls-cached-info]</a> can be used to reduce the size of a handshake, allowing more space for application data.  Since the server certificate is not permitted to change when using 0-RTT with one of these cipher suites, this extension trivially saves a considerable amount of space.</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.4.p.1">Data sent after the Finished messages in the complete handshake are protected based on both the ephemeral key exchange and the pre-shared key.  Learning either an (EC)DHE private key or the pre-shared key is insufficient to compromise the record protection.</p>
-<p id="rfc.section.4.p.2">The combination of pre-shared key and certificate authentication relies on peers maintaining the confidentiality of the pre-shared key for the confidentiality and integrity of 0-RTT data.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.5.p.1">IANA is requested to add the following entries in the TLS Cipher Suite Registry:</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#signaling-support" id="signaling-support">Signaling Support</a></h1>
+<p id="rfc.section.4.p.1">A TLS server that supports these cipher suites needs to indicate that it does so in the NewSessionTicket message.  A new <samp>allow_dhe_cert_resumption</samp> value is added to TicketFlags that, when set, indicates that the server will accept resumption with cipher suites that do both (EC)DHE and certificate authentication.</p>
+<pre>
+   enum {
+     allow_early_data(1),
+     allow_dhe_resumption(2),
+     allow_psk_resumption(4),
+     allow_dhe_cert_resumption(8) // new
+   } TicketFlags;
+</pre>
+<p id="rfc.section.4.p.2">There is no IANA registry for these values, so <a href="#I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</a> is updated to include this value.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.5.p.1">Data sent after the Finished messages in the complete handshake are protected based on both the ephemeral key exchange and the pre-shared key.  Learning either an (EC)DHE private key or the pre-shared key is insufficient to compromise the record protection.</p>
+<p id="rfc.section.5.p.2">The combination of pre-shared key and certificate authentication relies on peers maintaining the confidentiality of the pre-shared key for the confidentiality and integrity of 0-RTT data.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.6.p.1">IANA is requested to add the following entries in the TLS Cipher Suite Registry:</p>
 <p>
   <samp>TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX TLS_ECDHE_PSK_ECDSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX </samp>
 </p>
-<h1 id="rfc.references"><a href="#rfc.references">6.</a> References</h1>
-<h2 id="rfc.references.1"><a href="#rfc.references.1">6.1.</a> Normative References</h2>
+<h1 id="rfc.references"><a href="#rfc.references">7.</a> References</h1>
+<h2 id="rfc.references.1"><a href="#rfc.references.1">7.1.</a> Normative References</h2>
 <table>
   <tbody>
     <tr>
@@ -448,14 +469,32 @@ li, p {
     </tr>
   </tbody>
 </table>
-<h2 id="rfc.references.2"><a href="#rfc.references.2">6.2.</a> Informative References</h2>
+<h2 id="rfc.references.2"><a href="#rfc.references.2">7.2.</a> Informative References</h2>
 <table>
   <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-tls-chacha20-poly1305">[I-D.ietf-tls-chacha20-poly1305]</b>
+      </td>
+      <td class="top"><a>Langley, A.</a>, <a>Chang, W.</a>, <a>Mavrogiannopoulos, N.</a>, <a>Strombergson, J.</a> and <a>S. Josefsson</a>, "<a href="http://tools.ietf.org/html/draft-ietf-tls-chacha20-poly1305-04">ChaCha20-Poly1305 Cipher Suites for Transport Layer Security (TLS)</a>", Internet-Draft draft-ietf-tls-chacha20-poly1305-04, December 2015.</td>
+    </tr>
     <tr>
       <td class="reference">
         <b id="RFC0793">[RFC0793]</b>
       </td>
       <td class="top"><a>Postel, J.</a>, "<a href="http://tools.ietf.org/html/rfc793">Transmission Control Protocol</a>", STD 7, RFC 793, DOI 10.17487/RFC0793, September 1981.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5288">[RFC5288]</b>
+      </td>
+      <td class="top"><a>Salowey, J.</a>, <a>Choudhury, A.</a> and <a>D. McGrew</a>, "<a href="http://tools.ietf.org/html/rfc5288">AES Galois Counter Mode (GCM) Cipher Suites for TLS</a>", RFC 5288, DOI 10.17487/RFC5288, August 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7301">[RFC7301]</b>
+      </td>
+      <td class="top"><a>Friedl, S.</a>, <a>Popov, A.</a>, <a>Langley, A.</a> and <a>E. Stephan</a>, "<a href="http://tools.ietf.org/html/rfc7301">Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</a>", RFC 7301, DOI 10.17487/RFC7301, July 2014.</td>
     </tr>
   </tbody>
 </table>

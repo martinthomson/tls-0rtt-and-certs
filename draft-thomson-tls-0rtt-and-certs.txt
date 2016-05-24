@@ -4,8 +4,10 @@
 
 Network Working Group                                         M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                            May 16, 2016
-Expires: November 17, 2016
+Updates: I-D.ietf-tls-tls13 (if                             May 24, 2016
+         approved)
+Intended status: Standards Track
+Expires: November 25, 2016
 
 
  Cipher Suites for Negotiating Zero Round Trip (0-RTT) Transport Layer
@@ -33,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 17, 2016.
+   This Internet-Draft will expire on November 25, 2016.
 
 Copyright Notice
 
@@ -47,16 +49,17 @@ Copyright Notice
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
 
 
 
 
-Thomson                 Expires November 17, 2016               [Page 1]
+Thomson                 Expires November 25, 2016               [Page 1]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
+
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
 
 Table of Contents
 
@@ -64,13 +67,14 @@ Table of Contents
      1.1.  Notational Conventions  . . . . . . . . . . . . . . . . .   3
    2.  New Cipher Suites . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Combining Certificate and PSK Authentication  . . . . . . . .   4
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  Signaling Support . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -101,18 +105,17 @@ Table of Contents
    remainder of the handshake is identical to a regular one round trip
    handshake with the only difference being that the resumption secret
    is mixed into the key schedule.  This allows peers to provide fresh
-   proof that they control authentication keys without losing the
-   latency advantages provided by the 0-RTT mode.
 
 
 
 
-
-
-Thomson                 Expires November 17, 2016               [Page 2]
+Thomson                 Expires November 25, 2016               [Page 2]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
+
+   proof that they control authentication keys without losing the
+   latency advantages provided by the 0-RTT mode.
 
 1.1.  Notational Conventions
 
@@ -159,17 +162,17 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
    AES_128_GCM and AES_256_GCM use the AEAD_AES_128_GCM and
    AEAD_AES_256_GCM authenticated encryption defined in [RFC5116].
-   These are similar to the other AES-GCM modes that are described in
-   [RFC5288].  CHACHA20_POLY1305 cipher suites use the authenticated
-   encryption defined in [RFC7539].  Other ChaCha20-Poly1305 modes are
 
 
 
-Thomson                 Expires November 17, 2016               [Page 3]
+Thomson                 Expires November 25, 2016               [Page 3]
 
 Internet-Draft           TLS 0-RTT Certificates                 May 2016
 
 
+   These are similar to the other AES-GCM modes that are described in
+   [RFC5288].  CHACHA20_POLY1305 cipher suites use the authenticated
+   encryption defined in [RFC7539].  Other ChaCha20-Poly1305 modes are
    described in [I-D.ietf-tls-chacha20-poly1305].  All authenticated
    encryption modes use the nonce formulation from [I-D.ietf-tls-tls13].
 
@@ -199,7 +202,34 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    using 0-RTT with one of these cipher suites, this extension trivially
    saves a considerable amount of space.
 
-4.  Security Considerations
+4.  Signaling Support
+
+   A TLS server that supports these cipher suites needs to indicate that
+   it does so in the NewSessionTicket message.  A new
+   "allow_dhe_cert_resumption" value is added to TicketFlags that, when
+   set, indicates that the server will accept resumption with cipher
+   suites that do both (EC)DHE and certificate authentication.
+
+      enum {
+        allow_early_data(1),
+        allow_dhe_resumption(2),
+        allow_psk_resumption(4),
+        allow_dhe_cert_resumption(8) // new
+      } TicketFlags;
+
+
+
+
+
+Thomson                 Expires November 25, 2016               [Page 4]
+
+Internet-Draft           TLS 0-RTT Certificates                 May 2016
+
+
+   There is no IANA registry for these values, so [I-D.ietf-tls-tls13]
+   is updated to include this value.
+
+5.  Security Considerations
 
    Data sent after the Finished messages in the complete handshake are
    protected based on both the ephemeral key exchange and the pre-shared
@@ -210,7 +240,7 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    relies on peers maintaining the confidentiality of the pre-shared key
    for the confidentiality and integrity of 0-RTT data.
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    IANA is requested to add the following entries in the TLS Cipher
    Suite Registry:
@@ -218,14 +248,6 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    "TLS_ECDHE_PSK_ECDSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
    TLS_ECDHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
    TLS_DHE_PSK_RSA_WITH_AES_128_GCM_SHA256 = 0xXXXX
-
-
-
-Thomson                 Expires November 17, 2016               [Page 4]
-
-Internet-Draft           TLS 0-RTT Certificates                 May 2016
-
-
    TLS_ECDHE_PSK_ECDSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
    TLS_ECDHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
    TLS_DHE_PSK_RSA_WITH_AES_256_GCM_SHA384 = 0xXXXX
@@ -233,9 +255,9 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
    TLS_ECDHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX
    TLS_DHE_PSK_RSA_WITH_CHACHA20_POLY1305_SHA256 = 0xXXXX "
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [DH]       Diffie, W. and M. Hellman, "New Directions in
               Cryptography", IEEE Transactions on Information Theory,
@@ -251,6 +273,14 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
               Santesson, S. and H. Tschofenig, "Transport Layer Security
               (TLS) Cached Information Extension", draft-ietf-tls-
               cached-info-23 (work in progress), May 2016.
+
+
+
+
+Thomson                 Expires November 25, 2016               [Page 5]
+
+Internet-Draft           TLS 0-RTT Certificates                 May 2016
+
 
    [I-D.ietf-tls-tls13]
               Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -275,22 +305,43 @@ Internet-Draft           TLS 0-RTT Certificates                 May 2016
               Protocols", RFC 7539, DOI 10.17487/RFC7539, May 2015,
               <http://www.rfc-editor.org/info/rfc7539>.
 
-
-
-Thomson                 Expires November 17, 2016               [Page 5]
-
-Internet-Draft           TLS 0-RTT Certificates                 May 2016
-
-
    [X962]     ANSI, "Public Key Cryptography For The Financial Services
               Industry: The Elliptic Curve Digital Signature Algorithm
               (ECDSA)", ANSI X9.62, 1998.
 
-6.2.  Informative References
+7.2.  Informative References
+
+   [I-D.ietf-tls-chacha20-poly1305]
+              Langley, A., Chang, W., Mavrogiannopoulos, N.,
+              Strombergson, J., and S. Josefsson, "ChaCha20-Poly1305
+              Cipher Suites for Transport Layer Security (TLS)", draft-
+              ietf-tls-chacha20-poly1305-04 (work in progress), December
+              2015.
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
               RFC 793, DOI 10.17487/RFC0793, September 1981,
               <http://www.rfc-editor.org/info/rfc793>.
+
+   [RFC5288]  Salowey, J., Choudhury, A., and D. McGrew, "AES Galois
+              Counter Mode (GCM) Cipher Suites for TLS", RFC 5288,
+              DOI 10.17487/RFC5288, August 2008,
+              <http://www.rfc-editor.org/info/rfc5288>.
+
+
+
+
+
+
+
+Thomson                 Expires November 25, 2016               [Page 6]
+
+Internet-Draft           TLS 0-RTT Certificates                 May 2016
+
+
+   [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
+              "Transport Layer Security (TLS) Application-Layer Protocol
+              Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
+              July 2014, <http://www.rfc-editor.org/info/rfc7301>.
 
 Appendix A.  Acknowledgments
 
@@ -333,4 +384,9 @@ Author's Address
 
 
 
-Thomson                 Expires November 17, 2016               [Page 6]
+
+
+
+
+
+Thomson                 Expires November 25, 2016               [Page 7]
